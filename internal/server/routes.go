@@ -4,6 +4,7 @@ import (
 	"github.com/Hello-Storage/hello-storage-proxy/internal/api"
 	"github.com/Hello-Storage/hello-storage-proxy/internal/config"
 	"github.com/Hello-Storage/hello-storage-proxy/internal/middlewares"
+	"github.com/Hello-Storage/hello-storage-proxy/pkg/s3"
 	"github.com/Hello-Storage/hello-storage-proxy/pkg/token"
 	"github.com/gin-gonic/gin"
 )
@@ -24,6 +25,14 @@ func registerRoutes(router *gin.Engine) {
 
 	// routes
 	api.Ping(APIv1)
+
+	s3V2Client, err := s3.GetS3V2Client()
+	if err != nil {
+		log.Errorf("failed to create s3 client: %s", err)
+		panic(err)
+	}
+
+	api.GeneratePutPresignedObject(s3V2Client, APIv1)
 	/*
 		//api keys routes
 		api.ApiKey(AuthAPIv1, tokenMaker)
