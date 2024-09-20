@@ -1,0 +1,31 @@
+# Dockerfile.dev
+
+# Use the official Golang image based on Alpine
+FROM golang:1.22-alpine
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Environment variables
+ENV CGO_ENABLED=0
+ENV GOPATH=/go
+ENV GOCACHE=/go-build
+
+# Install necessary packages
+RUN apk update && apk add --no-cache git
+
+# Install Air for live reloading
+RUN go install github.com/air-verse/air@latest
+
+# Copy go.mod and go.sum files
+COPY go.mod go.sum ./
+
+# Download Go module dependencies
+RUN --mount=type=cache,target=/go/pkg/mod/cache \
+    go mod download
+
+COPY .air.toml ./
+
+# Command to run when starting the container
+CMD ["air", "-c", ".air.toml"]
+#CMD ["echo", "Hello, World!"]

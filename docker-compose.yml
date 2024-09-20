@@ -1,0 +1,26 @@
+# docker-compose.yml
+
+name: storage-proxy
+
+services:
+  backend:
+    container_name: storage-proxy
+    image: hello-storage-proxy
+    build:
+      context: ./
+      dockerfile: docker/Dockerfile.dev
+    restart: always
+    expose:
+      - 8181
+    ports:
+      - "8181:8181"
+    env_file:
+      - .env
+    volumes:
+      - ./:/app
+    networks:
+      - hello-dev_network-backend
+
+networks:
+  hello-dev_network-backend:
+    external: true
