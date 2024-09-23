@@ -19,7 +19,7 @@ func GeneratePutPresignedObject(s3V2Client *s3V2.Client, router *gin.RouterGroup
 			PresignClient: s3V2.NewPresignClient(s3V2Client),
 		}
 
-		presignedHTTPRequest, err := presigner.PutObject(config.Env().StorageBucket, "objectKey", 60)
+		presignedHTTPRequest, err := presigner.PutObject(config.Env().StorageBucket, "objectKey.pdf", 60*15)
 
 		log.Printf("Presigned URL: %s", presignedHTTPRequest.URL)
 		log.Printf("Presigned Method: %s", presignedHTTPRequest.Method)
