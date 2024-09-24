@@ -33,6 +33,7 @@ func registerRoutes(router *gin.Engine) {
 	}
 
 	api.GeneratePutPresignedObject(s3V2Client, APIv1)
+	api.GenerateGetPresignedObject(s3V2Client, APIv1)
 	/*
 		//api keys routes
 		api.ApiKey(AuthAPIv1, tokenMaker)

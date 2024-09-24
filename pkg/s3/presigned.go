@@ -1,5 +1,6 @@
 package s3
 
+/*
 import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
@@ -7,6 +8,7 @@ import (
 )
 
 // GeneratePresignedURL function will generate a presigned URL for client to upload directly to S3
+
 
 func GeneratePresignedURL(s3Config aws.Config, bucket, key string) (string, error) {
 
@@ -35,3 +37,4 @@ func GeneratePresignedURL(s3Config aws.Config, bucket, key string) (string, erro
 
 	return urlStr, nil
 }
+*/
