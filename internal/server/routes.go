@@ -34,21 +34,20 @@ func registerRoutes(router *gin.Engine) {
 
 	api.GeneratePutPresignedObject(s3V2Client, APIv1)
 	api.GenerateGetPresignedObject(s3V2Client, APIv1)
-	/*
-		//api keys routes
-		api.ApiKey(AuthAPIv1, tokenMaker)
-		// auth routes
-		api.LoginUser(APIv1, tokenMaker)
-		api.RenewAccessToken(APIv1, tokenMaker)
-		api.OAuthGoogle(APIv1, tokenMaker)
-		api.RequestNonce(APIv1)
-		api.StartOTP(APIv1)
-		api.VerifyOTP(APIv1, tokenMaker)
 
-		// user routes
-		api.LoadUser(AuthAPIv1)
-		api.GetUserDetail(AuthAPIv1)
-	*/
+	//api keys routes
+	api.ApiKey(AuthAPIv1, tokenMaker)
+	// auth routes
+	api.LoginUser(APIv1, tokenMaker)
+	api.RenewAccessToken(APIv1, tokenMaker)
+	api.OAuthGoogle(APIv1, tokenMaker)
+	api.RequestNonce(APIv1)
+	api.StartOTP(APIv1)
+	api.VerifyOTP(APIv1, tokenMaker)
+
+	// user routes
+	api.LoadUser(AuthAPIv1)
+	api.GetUserDetail(AuthAPIv1)
 
 	// file routes
 	/*

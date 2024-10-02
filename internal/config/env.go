@@ -29,6 +29,7 @@ type EnvVar struct {
 	StorageBucket    string
 	StorageEndpoint  string
 	StorageRegion    string
+	EncryptionKey    string
 }
 
 var env EnvVar
@@ -72,6 +73,7 @@ func LoadEnv() (err error) {
 		StorageBucket:    os.Getenv("STORAGE_BUCKET"),
 		StorageEndpoint:  os.Getenv("STORAGE_ENDPOINT"),
 		StorageRegion:    os.Getenv("STORAGE_REGION"),
+		EncryptionKey:    os.Getenv("ENCRYPTION_KEY"),
 	}
 
 	values := reflect.ValueOf(env)
