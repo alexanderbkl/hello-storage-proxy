@@ -5,14 +5,14 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/Hello-Storage/hello-back/internal/config"
-	"github.com/Hello-Storage/hello-back/internal/db"
-	"github.com/Hello-Storage/hello-back/internal/entity"
-	"github.com/Hello-Storage/hello-back/internal/form"
-	"github.com/Hello-Storage/hello-back/internal/query"
-	"github.com/Hello-Storage/hello-back/pkg/crypto"
-	"github.com/Hello-Storage/hello-back/pkg/oauth"
-	"github.com/Hello-Storage/hello-back/pkg/token"
+	"github.com/Hello-Storage/hello-storage-proxy/internal/config"
+	"github.com/Hello-Storage/hello-storage-proxy/internal/db"
+	"github.com/Hello-Storage/hello-storage-proxy/internal/entity"
+	"github.com/Hello-Storage/hello-storage-proxy/internal/form"
+	"github.com/Hello-Storage/hello-storage-proxy/internal/query"
+	"github.com/Hello-Storage/hello-storage-proxy/pkg/crypto"
+	"github.com/Hello-Storage/hello-storage-proxy/pkg/oauth"
+	"github.com/Hello-Storage/hello-storage-proxy/pkg/token"
 	"github.com/gin-gonic/gin"
 )
 
@@ -37,7 +37,7 @@ func OAuthGoogle(router *gin.RouterGroup, tokenMaker token.Maker) {
 
 		if err != nil {
 			log.Errorf("failed to get google user: %v", err)
-			ctx.JSON(http.StatusBadGateway, 
+			ctx.JSON(http.StatusBadGateway,
 				ErrorResponse(err, "/oauth/google:00000002"),
 			)
 			return
@@ -75,7 +75,7 @@ func OAuthGoogle(router *gin.RouterGroup, tokenMaker token.Maker) {
 			if err != nil {
 				log.Errorf("failed to encrypt private key: %v", err)
 				tx.Rollback()
-				ctx.JSON(http.StatusInternalServerError, ErrorResponse(err,"/oauth/google:00000004"))
+				ctx.JSON(http.StatusInternalServerError, ErrorResponse(err, "/oauth/google:00000004"))
 				return
 			}
 
@@ -96,20 +96,20 @@ func OAuthGoogle(router *gin.RouterGroup, tokenMaker token.Maker) {
 			//decryptedPrivateKey, err := crypto.Decrypt(encryptedPrivateKey)
 			if err := new.Create(); err != nil {
 				log.Errorf("failed to create user: %v", err)
-				ctx.JSON(http.StatusInternalServerError, ErrorResponse(err,"/oauth/google:00000005"))
+				ctx.JSON(http.StatusInternalServerError, ErrorResponse(err, "/oauth/google:00000005"))
 				return
 			}
 
 			// check if referral code is valid
 			if req.ReferralCode == "ns" {
 				referral := entity.ReferredUser{
-					ReferredID:  new.ID,
+					ReferredID: new.ID,
 					Referrer:   req.ReferralCode,
 				}
 				if err := referral.TxCreate(tx); err != nil {
 					log.Errorf("failed to save referral: %v", err)
 					tx.Rollback()
-					ctx.JSON(http.StatusInternalServerError, ErrorResponse(err,"/oauth/google:00000006"))
+					ctx.JSON(http.StatusInternalServerError, ErrorResponse(err, "/oauth/google:00000006"))
 					return
 				}
 			}
@@ -132,7 +132,7 @@ func OAuthGoogle(router *gin.RouterGroup, tokenMaker token.Maker) {
 				tx.Rollback()
 				ctx.JSON(
 					http.StatusInternalServerError,
-					ErrorResponse(err,"/oauth/google:00000007"),
+					ErrorResponse(err, "/oauth/google:00000007"),
 				)
 				return
 			}
@@ -142,7 +142,7 @@ func OAuthGoogle(router *gin.RouterGroup, tokenMaker token.Maker) {
 
 				if err != nil {
 					log.Errorf("failed to create referral: %v", err)
-					ctx.JSON(http.StatusInternalServerError,ErrorResponse(err,"/otp/start:00000008"))
+					ctx.JSON(http.StatusInternalServerError, ErrorResponse(err, "/otp/start:00000008"))
 					return
 				}
 			}
@@ -160,7 +160,7 @@ func OAuthGoogle(router *gin.RouterGroup, tokenMaker token.Maker) {
 		if err != nil {
 			tx.Rollback()
 			log.Errorf("failed to create access token: %v", err)
-			ctx.JSON(http.StatusInternalServerError, ErrorResponse(err,"/oauth/google:00000010"))
+			ctx.JSON(http.StatusInternalServerError, ErrorResponse(err, "/oauth/google:00000010"))
 			return
 		}
 
@@ -173,7 +173,7 @@ func OAuthGoogle(router *gin.RouterGroup, tokenMaker token.Maker) {
 		if err != nil {
 			log.Errorf("failed to create refresh token: %v", err)
 			tx.Rollback()
-			ctx.JSON(http.StatusInternalServerError, ErrorResponse(err,"/oauth/google:00000011"))
+			ctx.JSON(http.StatusInternalServerError, ErrorResponse(err, "/oauth/google:00000011"))
 			return
 		}
 
@@ -186,7 +186,7 @@ func OAuthGoogle(router *gin.RouterGroup, tokenMaker token.Maker) {
 			RefreshToken:          refreshToken,
 			RefreshTokenExpiresAt: refreshPayload.ExpiredAt,
 		}
-		
+
 		userLogin := &entity.UserLogin{
 			LoginDate:  time.Now(),
 			WalletAddr: u.Wallet.Address,
@@ -197,7 +197,7 @@ func OAuthGoogle(router *gin.RouterGroup, tokenMaker token.Maker) {
 			tx.Rollback()
 			ctx.JSON(
 				http.StatusInternalServerError,
-				ErrorResponse(err,"/oauth/google:00000012"),
+				ErrorResponse(err, "/oauth/google:00000012"),
 			)
 			return
 		}
@@ -331,13 +331,12 @@ func OAuthGithub(router *gin.RouterGroup, tokenMaker token.Maker) {
 				return
 			}
 
-
 			if err == nil && referrer_id != 0 && user_detail.ID != 0 && new.ID != 0 {
 				err := query.CreateReferral(referrer_id, new.ID, user_detail.ID)
 
 				if err != nil {
 					log.Errorf("failed to create referral: %v", err)
-					ctx.JSON(http.StatusInternalServerError,ErrorResponse(err,"/otp/start:00000008"))
+					ctx.JSON(http.StatusInternalServerError, ErrorResponse(err, "/otp/start:00000008"))
 					return
 				}
 			}

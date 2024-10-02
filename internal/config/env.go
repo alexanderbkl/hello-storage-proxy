@@ -17,6 +17,7 @@ type EnvVar struct {
 	TokenSymmetricKey    string
 	AccessTokenDuration  time.Duration
 	RefreshTokenDuration time.Duration
+	MailGunApiKey        string
 	// Postgres env
 	DBHost     string
 	DBName     string
@@ -74,6 +75,7 @@ func LoadEnv() (err error) {
 		StorageEndpoint:  os.Getenv("STORAGE_ENDPOINT"),
 		StorageRegion:    os.Getenv("STORAGE_REGION"),
 		EncryptionKey:    os.Getenv("ENCRYPTION_KEY"),
+		MailGunApiKey:    os.Getenv("MAILGUN_API_KEY"),
 	}
 
 	values := reflect.ValueOf(env)
