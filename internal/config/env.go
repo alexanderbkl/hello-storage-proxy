@@ -75,7 +75,7 @@ func LoadEnv() (err error) {
 		StorageEndpoint:  os.Getenv("STORAGE_ENDPOINT"),
 		StorageRegion:    os.Getenv("STORAGE_REGION"),
 		EncryptionKey:    os.Getenv("ENCRYPTION_KEY"),
-		MailGunApiKey:    os.Getenv("MAILGUN_API_KEY"),
+		MailGunApiKey:    os.Getenv("MAILGUN_API"),
 	}
 
 	values := reflect.ValueOf(env)
