@@ -35,7 +35,7 @@ func ConnectDB() error {
 // MigrateDb initializes the database and migrates the schema if needed.
 func MigrateDb(runFailed bool, ids []string) {
 
-	entity.InitDb(migrate.Opt(false, runFailed, ids))
+	entity.InitDb(migrate.Opt(true, runFailed, ids))
 
 	go entity.Error{}.LogEvents()
 

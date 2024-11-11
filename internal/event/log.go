@@ -10,3 +10,9 @@ var TextFormatter = &logrus.TextFormatter{
 
 // Log is the global default logger.
 var Log = logrus.New()
+
+func init() {
+	Log.SetFormatter(TextFormatter)
+	//level is set to debug
+	//Log.SetLevel(logrus.DebugLevel)
+}

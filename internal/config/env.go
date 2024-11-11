@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"reflect"
+	"strconv"
 	"time"
 
 	"github.com/joho/godotenv"
@@ -31,6 +32,7 @@ type EnvVar struct {
 	StorageEndpoint  string
 	StorageRegion    string
 	EncryptionKey    string
+	EpochZero        int64
 }
 
 var env EnvVar
@@ -76,6 +78,15 @@ func LoadEnv() (err error) {
 		StorageRegion:    os.Getenv("STORAGE_REGION"),
 		EncryptionKey:    os.Getenv("ENCRYPTION_KEY"),
 		MailGunApiKey:    os.Getenv("MAILGUN_API"),
+
+		EpochZero: func() int64 {
+			//parse from string to int64
+			i, err := strconv.ParseInt(os.Getenv("EPOCH_ZERO"), 10, 64)
+			if err != nil {
+				return 0
+			}
+			return i
+		}(),
 	}
 
 	values := reflect.ValueOf(env)

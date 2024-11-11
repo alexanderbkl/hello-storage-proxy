@@ -119,6 +119,29 @@ func FindUserWithWallet(userID uint) *entity.User {
 	return &user
 }
 
+func FindMinerWithUserID(userID uint) *entity.Miner {
+	var miner *entity.Miner
+
+	if result := db.Db().Model(&miner).Where("user_id = ?", userID).First(&miner); result.Error != nil {
+		// create a new miner
+
+		miner.Balance = "0"
+		miner.LastChallenge = rnd.GenerateRandomString(16)
+		miner.OfferedStorage = "0"
+		miner.UserId = userID
+		// log miner:
+		log.Infof("miner: %+v", miner)
+		if err := miner.Create(); err != nil {
+			log.Errorf("failed to create miner: %s", err)
+			return nil
+		}
+		//log.Infof("miner created: %+v", miner)
+		return miner
+	}
+	//log.Infof("miner result got: %+v", miner)
+	return miner
+}
+
 func FindUserByGithub(github_id uint) *entity.User {
 	u := &entity.User{}
 

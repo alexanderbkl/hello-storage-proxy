@@ -49,6 +49,7 @@ func registerRoutes(router *gin.Engine) {
 
 	// user routes
 	api.LoadUser(AuthAPIv1)
+	api.LoadMiner(AuthAPIv1)
 	api.GetUserDetail(AuthAPIv1)
 
 	// file routes
